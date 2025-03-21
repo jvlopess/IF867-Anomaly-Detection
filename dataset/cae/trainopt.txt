@@ -1,0 +1,31 @@
+----------------------Arguments-------------------------
+               batch_size: 8                             
+                    beta1: 0.5                           
+                    beta2: 0.999                         
+               brightness: 0.1                           
+                 channels: 3                             
+                 cropsize: 256                           
+                 data_dir: dataset/                      
+                  dataset: mvtec                         
+              epoch_count: 0                             
+                      gpu: 0                             
+                 img_size: 256                           
+                init_gain: 0.02                          
+                init_type: normal                        
+                   latent: 100                           
+                       lr: 0.0002                        
+           lr_decay_iters: 50                            
+                lr_policy: linear                        
+                     mode: train                         
+                    model: cae                           
+                 n_epochs: 1000                          
+           n_epochs_decay: 500                           
+               no_dropout: 0                             
+              num_threads: 0                             
+                   object: bottle                        
+         print_epoch_freq: 1                             
+                   rotate: 1                             
+                 save_dir: dataset/                      
+          save_epoch_freq: 50                            
+                  verbose: 0                             
+---------------------End--------------------------------
