@@ -1,0 +1,21 @@
+----------------------Arguments-------------------------
+               batch_size: 1                             
+               brightness: 0.0                           
+                 channels: 3                             
+                 cropsize: 256                           
+                 data_dir: dataset/                      
+                  dataset: mvtec                         
+                      gpu: 0                             
+                 img_size: 256                           
+                init_gain: 0.02                          
+                init_type: normal                        
+                   latent: 100                           
+                     mode: test                          
+                    model: cae                           
+              num_threads: 0                             
+                   object: bottle                        
+                   rotate: 1                             
+                 save_dir: dataset/                      
+                threshold: 0.2                           
+                  verbose: 0                             
+---------------------End--------------------------------
