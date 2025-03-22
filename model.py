@@ -352,7 +352,7 @@ class CAE(BaseModel):
 
     def save_images(self, data):
         # Supondo que 'utils.compare_images' e 'utils.save_images' estejam implementados externamente.
-        from utils import utils
+        import utils
         images = data['img']
         paths = os.path.join(self.opt.save_dir, self.opt.object, "result")
         anomaly_img = utils.compare_images(images, self.generated_imgs, threshold=self.opt.threshold)
