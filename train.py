@@ -10,12 +10,11 @@ Example:
 """
 
 
-from options import TrainOptions
+from options.train_options import TrainOptions
 from data import create_dataset
-from model import create_model
+from models import create_model
 import time
-
-from utils import plt_show
+from utils.utils import plt_show, plot_losses,save_images
 
 
 if __name__ == "__main__":
@@ -27,8 +26,10 @@ if __name__ == "__main__":
     model = create_model(opt)       # create model (AE, AAE)
     model.setup(opt)                # set model : if mode is 'train', define schedulers and if mode is 'test', load saved networks
     total_iters = 0
+    total_losses=[]
     loss_name = model.loss_name            # loss name for naming
-    for epoch in range(opt.epoch_count, opt.n_epochs + opt.n_epochs_decay + 1):
+    total_epochs=opt.n_epochs + opt.n_epochs_decay + 1
+    for epoch in range(opt.epoch_count, total_epochs):
         epoch_start_time = time.time()                      # start epoch time
         model.update_learning_rate(epoch)                   # update learning rate change with schedulers
         epoch_iters = 0
@@ -41,6 +42,7 @@ if __name__ == "__main__":
             epoch_iters += 1
         if epoch % opt.print_epoch_freq == 0:               # model loss, time print frequency
             losses = model.get_current_losses(*loss_name)
+            total_losses.append(losses)
             epoch_time = time.time() - epoch_start_time
             message = f"epoch : {epoch} | total_iters : {total_iters} | epoch_time:{epoch_time:.3f}"
             for k,v in losses.items():
@@ -53,3 +55,8 @@ if __name__ == "__main__":
             )
             model.save_networks()
             plt_show(model.generated_imgs[:3])
+    plot_losses(total_losses, total_epochs)
+    
+    
+
+    

@@ -9,9 +9,9 @@ Example:
         python test.py --datadir [dataset folder] --model [model_name]
 """
 
-from options import TestOptions
+from options.test_options import TestOptions
 from data import create_dataset
-from model import create_model
+from models import create_model
 
 import time
 
@@ -29,7 +29,7 @@ if __name__ == "__main__":
         model.set_input(data)
         model.test()
 
-        generated_images = model.get_generated_imgs()
+        generated_images = model.get_generated_imags()
 
         epoch_time = time.time() - epoch_start_time
         print(f"{i} epoch_time : {epoch_time:.3f}")
