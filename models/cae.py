@@ -4,7 +4,9 @@ import torch
 from utils import utils
 from models import init_net
 import os
-
+import numpy as np
+from sklearn.metrics import mean_squared_error, roc_auc_score
+from skimage.metrics import peak_signal_noise_ratio
 class CAE(BaseModel):
     """This class implements the Convolutional AutoEncoder for normal image generation
     CAE is processed in encoder and decoder that is composed CNN layers
@@ -62,6 +64,9 @@ class CAE(BaseModel):
     def test(self):
         with torch.no_grad():
             self.forward()
+            mse, psnr= self.calculate_metrics()    
+            print(f"Test Metrics - MSE: {mse:.4f}, PSNR: {psnr:.2f} dB") 
+        return mse,psnr
 
     def save_images(self, data):
         images = data['img']
@@ -70,6 +75,29 @@ class CAE(BaseModel):
         anomaly_img_compared = utils.compare_images(images, self.generated_imgs, threshold=self.opt.threshold)
         utils.save_images(anomaly_img_compared, paths, data)
 
+    def calculate_metrics(self):
+        """Calcula MSE, PSNR """
+
+        real_imgs = self.real_imgs.cpu().numpy()
+        generated_imgs = self.generated_imgs.cpu().numpy()
+
+        real_imgs = real_imgs.transpose(0, 2, 3, 1)  # (batch, H, W, C)
+        generated_imgs = generated_imgs.transpose(0, 2, 3, 1)
+
+        mse_list = []
+        psnr_list = []
+        y_scores = []
+        y_true = []
+
+        for real, gen in zip(real_imgs, generated_imgs):
+            mse = mean_squared_error(real.flatten(), gen.flatten())
+            psnr = peak_signal_noise_ratio(real, gen, data_range=real.max() - real.min())
+
+            mse_list.append(mse)
+            psnr_list.append(psnr)
+            y_scores.append(mse)
+
+        return np.mean(mse_list), np.mean(psnr_list)
 
 
 
